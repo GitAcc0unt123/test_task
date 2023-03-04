@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    command: bash -c "sleep 3s && python3 restore_init_db.py && gunicorn -w 4 --bind 0.0.0.0:5000 app"
+    ports:
+      - 5000:5000
+    depends_on:
+      - database
+  database:
+    image: postgres:latest
+    command: ["postgres", "-c", "log_statement=all"]
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}

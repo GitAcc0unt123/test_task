@@ -1,0 +1,7 @@
+flask:
+  SAVE_FRAMES_COUNT: 12
+  VIDEOS_DIR_PATH: /app/test_videos # в контейнере
+  FRAMES_DIR_PATH: /app/test_frames
+  SQLALCHEMY_DATABASE_URI: postgresql://user:password@database:5432/dbname?sslmode=disable
+  SECRET_KEY: secr5tKe7
+  SQLALCHEMY_TEST_DATABASE_URI: postgresql://username:qwerty123@test_database:5432/test?sslmode=disable
