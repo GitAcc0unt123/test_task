@@ -8,9 +8,11 @@ from src.utils.config import Config
 
 videos_bp = Blueprint('videos', __name__)
 
+
 @videos_bp.route('', methods=['GET'])
 def get_video_list():
-    """Возвращает список имён файлов и полный путь к ним из указанного в конфигурационном файле каталога с видео.
+    """Возвращает список имён файлов и полный путь к ним из указанного
+    в конфигурационном файле каталога с видео.
     """
     video_dir_path = Config().flask['VIDEOS_DIR_PATH']
     try:

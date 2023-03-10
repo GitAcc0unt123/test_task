@@ -22,8 +22,9 @@ def app() -> 'Flask':
     Returns:
         Flask приложение.
     """
-    config = Config('config.yaml')
-    config.flask['SQLALCHEMY_DATABASE_URI'] = config.flask['SQLALCHEMY_TEST_DATABASE_URI']
+    config = Config()
+    config.flask['SQLALCHEMY_DATABASE_URI'] = (
+        config.flask['SQLALCHEMY_TEST_DATABASE_URI'])
     config.flask['TESTING'] = True
     app = create_flask_app(config.flask)
     return app
@@ -60,7 +61,8 @@ def client(app: 'Flask') -> 'FlaskClient':
 
 @pytest.fixture(scope="function")
 def clean_frames_dir() -> None:
-    """Функция для удаления всех файлов и каталогов из указанного в конфигурационном файле каталога с сохранёнными фреймами.
+    """Функция для удаления всех файлов и каталогов из указанного
+    в конфигурационном файле каталога с сохранёнными фреймами.
     """
     config = Config()
     frames_dir_path = config.flask['FRAMES_DIR_PATH']
@@ -76,7 +78,8 @@ def create_frame_service_information(
         frame_number: int,
         frame_file_path: str,
 ) -> None:
-    """Функция для добавления в базу данных строки со служебной информацией о вырезанном кадре.
+    """Функция для добавления в базу данных строки со служебной информацией о
+    вырезанном кадре.
 
     Args:
         app: Flask приложение.
@@ -86,6 +89,10 @@ def create_frame_service_information(
         frame_file_path: Полный путь к файлу с вырезанный кадром.
     """
     with app.app_context():
-        frame_service_information = FrameServiceInformation(video_file_name, frame_number, frame_file_path)
+        frame_service_information = FrameServiceInformation(
+            video_file_name,
+            frame_number,
+            frame_file_path
+        )
         db.session.add(frame_service_information)
         db.session.commit()

@@ -13,8 +13,12 @@ if TYPE_CHECKING:
     from flask_sqlalchemy import SQLAlchemy
 
 
-def test_route_saved_frames_get_empty_list(client: 'FlaskClient', db: 'SQLAlchemy'):
-    """Функция для тестирования получаемого от сервера списка сохранённых кадров со служебной информацией.
+def test_route_saved_frames_get_empty_list(
+        client: 'FlaskClient',
+        db: 'SQLAlchemy'
+        ) -> None:
+    """Функция для тестирования получаемого от сервера списка сохранённых
+    кадров со служебной информацией.
 
     Args:
         client: Тестовый клиент.
@@ -30,8 +34,13 @@ def test_route_saved_frames_get_empty_list(client: 'FlaskClient', db: 'SQLAlchem
     assert response.get_json() == []
 
 
-def test_route_saved_frames_get(client: 'FlaskClient', app: 'Flask', db: 'SQLAlchemy'):
-    """Функция для тестирования получаемого от сервера списка сохранённых кадров со служебной информацией.
+def test_route_saved_frames_get(
+        client: 'FlaskClient',
+        app: 'Flask',
+        db: 'SQLAlchemy'
+        ) -> None:
+    """Функция для тестирования получаемого от сервера списка сохранённых
+    кадров со служебной информацией.
 
     Args:
         client: Тестовый клиент.
@@ -53,16 +62,23 @@ def test_route_saved_frames_get(client: 'FlaskClient', app: 'Flask', db: 'SQLAlc
 
     response = client.get('/api/saved_frames')
     assert response.status_code == 200
-    assert response.get_json() == [ frame_service_information1, frame_service_information2 ]
+    assert response.get_json() == [
+        frame_service_information1,
+        frame_service_information2
+    ]
 
     # check idempotent
     response = client.get('/api/saved_frames')
     assert response.status_code == 200
-    assert response.get_json() == [ frame_service_information1, frame_service_information2 ]
+    assert response.get_json() == [
+        frame_service_information1,
+        frame_service_information2
+    ]
 
 
 def test_route_saved_frames_new_file_without_body(client: 'FlaskClient'):
-    """Функция проверяет ответ сервера по маршруту /api/saved_frames/new_file с пустым телом запроса.
+    """Функция проверяет ответ сервера по маршруту /api/saved_frames/new_file
+    с пустым телом запроса.
 
     Args:
         client: Тестовый клиент.
@@ -72,7 +88,8 @@ def test_route_saved_frames_new_file_without_body(client: 'FlaskClient'):
 
 
 def test_route_saved_frames_new_file_empty_json_body(client: 'FlaskClient'):
-    """Функция проверяет ответ сервера по маршруту /api/saved_frames/new_file с отсутствующими параметрами.
+    """Функция проверяет ответ сервера по маршруту /api/saved_frames/new_file
+    с отсутствующими параметрами.
 
     Args:
         client: Тестовый клиент.
@@ -86,7 +103,8 @@ def test_route_saved_frames_new_file_empty_json_body(client: 'FlaskClient'):
 
 
 def test_route_saved_frames_new_file_field_types(client: 'FlaskClient'):
-    """Функция проверяет ответ сервера по маршруту /api/saved_frames/new_file с параметрами неправильного типа.
+    """Функция проверяет ответ сервера по маршруту /api/saved_frames/new_file
+    с параметрами неправильного типа.
 
     Args:
         client: Тестовый клиент.
@@ -103,7 +121,8 @@ def test_route_saved_frames_new_file_field_types(client: 'FlaskClient'):
 
 
 def test_route_saved_frames_new_file_constraints(client: 'FlaskClient'):
-    """Функция проверяет ответ сервера по маршруту /api/saved_frames/new_file с недопустимыми значениями параметров.
+    """Функция проверяет ответ сервера по маршруту /api/saved_frames/new_file
+    с недопустимыми значениями параметров.
 
     Args:
         client: Тестовый клиент.
@@ -120,13 +139,14 @@ def test_route_saved_frames_new_file_constraints(client: 'FlaskClient'):
 
 
 def test_route_saved_frames_new_file_file_doesnt_exist(client: 'FlaskClient'):
-    """Функция проверяет ответ сервера по маршруту /api/saved_frames/new_file с несуществующим именем файла.
+    """Функция проверяет ответ сервера по маршруту /api/saved_frames/new_file
+    с несуществующим именем файла.
 
     Args:
         client: Тестовый клиент.
     """
     body = {
-        'file_path': 'sampl.mp4', # имя видеофайла
+        'file_path': 'sampl.mp4',  # имя видеофайла
         'frame_number': 1
     }
     response = client.post('/api/saved_frames/new_frame', json=body)
@@ -139,15 +159,17 @@ def test_route_saved_frames_new_file_file_doesnt_exist(client: 'FlaskClient'):
 def test_route_saved_frames_new_file_frame_doesnt_exist(
         client: 'FlaskClient',
         clean_frames_dir: None
-):
-    """Функция проверяет ответ сервера по маршруту /api/saved_frames/new_file с несуществующим фреймом.
+) -> None:
+    """Функция проверяет ответ сервера по маршруту /api/saved_frames/new_file
+    с несуществующим фреймом.
 
     Args:
         client: Тестовый клиент.
-        clean_frames_dir: Вызов фикстуры для удаления всех файлов в каталоге с фреймами перед выполнением теста.
+        clean_frames_dir: Вызов фикстуры для удаления всех файлов в каталоге
+          с фреймами перед выполнением теста.
     """
     body = {
-        'file_path': 'sample-1.mp4', # имя видеофайла
+        'file_path': 'sample-1.mp4',  # имя видеофайла
         'frame_number': 10
     }
     response = client.post('/api/saved_frames/new_frame', json=body)
@@ -162,20 +184,22 @@ def test_route_saved_frames_create(
         app: 'Flask',
         db: 'SQLAlchemy',
         clean_frames_dir: None
-):
-    """Функция проверяет ответ сервера по маршруту /api/saved_frames/new_file при сохранении служебной информации в БД.
+) -> None:
+    """Функция проверяет ответ сервера по маршруту /api/saved_frames/new_file
+    при сохранении служебной информации в БД.
 
     Args:
         client: Тестовый клиент.
         db: Вызов фикстуры для очистки базы данных перед выполнением теста.
-        clean_frames_dir: Вызов фикстуры для удаления всех файлов в каталоге с фреймами перед выполнением теста.
+        clean_frames_dir: Вызов фикстуры для удаления всех файлов в каталоге с
+          фреймами перед выполнением теста.
     """
     # make frames
     response = client.get('/api/frames?file_name=sample-1.mp4&time_in_video=0')
     assert response.status_code == 200
 
     request_body = {
-        'file_path': 'sample-1.mp4', # имя видеофайла
+        'file_path': 'sample-1.mp4',  # имя видеофайла
         'frame_number': 1
     }
     response = client.post('/api/saved_frames/new_frame', json=request_body)
@@ -190,20 +214,24 @@ def test_route_saved_frames_create(
 
     # read record from database
     with app.app_context():
-        frame_service_informations = db.session.execute(select(FrameServiceInformation)).scalars().all()
+        stmt = select(FrameServiceInformation)
+        frame_service_informations = db.session.execute(stmt).scalars().all()
 
     assert len(frame_service_informations) == 1
     assert frame_service_informations[0].video_file_name == 'sample-1.mp4'
     assert frame_service_informations[0].frame_number == 1
-    assert frame_service_informations[0].frame_file_path == os.path.join(frames_dir_path, 'sample-1.mp4', '1.png')
+    assert (frame_service_informations[0].frame_file_path ==
+            os.path.join(frames_dir_path, 'sample-1.mp4', '1.png'))
 
     # repeat request
     response = client.post('/api/saved_frames/new_frame', json=request_body)
     assert response.status_code == 400
 
     with app.app_context():
-        frame_service_informations = db.session.execute(select(FrameServiceInformation)).scalars().all()
+        stmt = select(FrameServiceInformation)
+        frame_service_informations = db.session.execute(stmt).scalars().all()
     assert len(frame_service_informations) == 1
     assert frame_service_informations[0].video_file_name == 'sample-1.mp4'
     assert frame_service_informations[0].frame_number == 1
-    assert frame_service_informations[0].frame_file_path == os.path.join(frames_dir_path, 'sample-1.mp4', '1.png')
+    assert (frame_service_informations[0].frame_file_path ==
+            os.path.join(frames_dir_path, 'sample-1.mp4', '1.png'))

@@ -8,7 +8,10 @@ if TYPE_CHECKING:
     from numpy import ndarray
 
 
-def extract_frame(video_path: str, time_in_video: int) -> Tuple[Optional[int], List['ndarray']]:
+def extract_frame(
+        video_path: str,
+        time_in_video: int
+    ) -> Tuple[Optional[int], List['ndarray']]:
     """Функция для извлечения кадров из видеофайла.
 
     Args:

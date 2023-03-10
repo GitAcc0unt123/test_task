@@ -19,7 +19,7 @@ class FrameServiceInformation(db.Model):
                  video_file_name: str,
                  frame_number: int,
                  frame_file_path: str,
-    ) -> None:
+                 ) -> None:
         """Инициализирует экземпляр класса.
 
         Args:

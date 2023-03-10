@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 
 def test_route_videos(client: 'FlaskClient'):
-    """Функция для тестирования получаемого от сервера списка файлов в папке с видео.
+    """Тестирует получаемый от сервера список файлов из папки с видео.
 
     Args:
         client: Тестовый клиент.
@@ -40,12 +40,13 @@ def test_route_videos(client: 'FlaskClient'):
             "file_path": f"{video_dir_path}/sample 0.mp4"
         },
     ]
+    expected = sorted(expected, key=lambda x: x['file_name'])
 
     response = client.get('/api/videos')
     assert response.status_code == 200
-    assert sorted(response.get_json(), key=lambda x: x['file_name']) == sorted(expected, key=lambda x: x['file_name'])
+    assert sorted(response.get_json(), key=lambda x: x['file_name']) == expected
 
     # check idempotent
     response = client.get('/api/videos')
     assert response.status_code == 200
-    assert sorted(response.get_json(), key=lambda x: x['file_name']) == sorted(expected, key=lambda x: x['file_name'])
+    assert sorted(response.get_json(), key=lambda x: x['file_name']) == expected

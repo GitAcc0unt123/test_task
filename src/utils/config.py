@@ -1,20 +1,20 @@
 import yaml
 
 
-class Config():
-    """Конфигурации сервисов.
+class MetaSingleton(type):
+    _instances = {}
 
-    Attributes:
-        flask: Конфигурация Flask приложения.
-    """
-    flask: dict
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(MetaSingleton, cls).__call__(*args,
+                                                                     **kwargs)
+        return cls._instances[cls]
 
-    def __init__(self, path_yaml: str = 'config.yaml') -> None:
-        """Инициализирует экземпляр класса.
 
-        Args:
-            path_yaml: Путь к конфигурационному файлу в формате yaml.
-        """
+class Config(metaclass=MetaSingleton):
+    flask: dict = None
+
+    def __init__(self, path_yaml: str = 'config.yaml'):
         with open(path_yaml, 'r') as file:
             config = yaml.safe_load(file)
             self.flask = config['flask']
