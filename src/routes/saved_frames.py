@@ -29,7 +29,7 @@ def get_saved_frames():
         ]
         response_data = json.dumps(response_data)
         return Response(response_data, 200, mimetype='application/json')
-    except Exception:
+    except:
         return 'Something went wrong', 500
 
 
@@ -97,6 +97,6 @@ def create_saved_frame():
     except IntegrityError:
         db.session.rollback()
         return Response(status=400)
-    except Exception:
+    except:
         db.session.rollback()
         return Response(status=500)

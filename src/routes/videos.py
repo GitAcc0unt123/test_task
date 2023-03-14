@@ -26,5 +26,5 @@ def get_video_list():
         ]
         response_data = json.dumps(response_data)
         return Response(response_data, 200, mimetype='application/json')
-    except Exception:
-        return Response('Something went wrong', 500)
+    except:
+        return {'message': 'Something went wrong'}, 500

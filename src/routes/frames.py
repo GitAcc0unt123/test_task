@@ -34,7 +34,7 @@ def get_frames():
     # check field types
     try:
         time_in_video = int(time_in_video)
-    except Exception:
+    except:
         return {"time_in_video": "Required number type"}, 400
 
     # file access by relative paths ../../../something
@@ -76,7 +76,7 @@ def get_frames():
             frame_path = os.path.join(frame_dir, frame_name)
             frame_paths.append(frame_path)
             cv2.imwrite(frame_path, frame)
-    except Exception:
+    except:
         return 'Something went wrong', 500
 
     response_data = {
